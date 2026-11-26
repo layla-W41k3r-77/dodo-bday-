@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هدية خاصة لـ ضوضو ✨</title>
+    
+    <!-- استيراد خطوط عربية دافئة وأنيقة من Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- مكتبة Tailwind CSS للتنسيق المتجاوب -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- مكتبة الورق الطاير للاحتفال (Canvas Confetti) -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        /* ==========================================================================
+           إعدادات الألوان والثيم الدافي (بيج كريمي + برتقالي خوخي + أصفر ذهبي)
+           ========================================================================== */
+        :root {
+            --bg-cream: #FFF8EE;
+            --bg-paper: #FDF2E3;
+            --card-bg: #FFFDF9;
+            --peach-primary: #F4A261;
+            --peach-dark: #E76F51;
+            --yellow-warm: #E9C46A;
+            --yellow-soft: #FBE8B2;
+            --text-brown: #5C4033;
+            --text-muted: #8C6D5E;
+            --border-warm: #EED6B8;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Tajawal', 'Cairo', sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-brown);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            /* خلفية ورقية دافئة بنقوش خفيفة جداً */
+            background-image: 
+                radial-gradient(#F4A26122 1.5px, transparent 1.5px),
+                radial-gradient(#E9C46A28 1.5px, #FFF8EE 1.5px);
+            background-size: 36px 36px;
+            background-position: 0 0, 18px 18px;
+        }
+
+        /* ==========================================================================
+           حركات وأنيميشن مخصصة
+           ========================================================================== */
+        
+        /* حركة النط الحماسية لبطاقة Happy Birthday */
+        @keyframes birthdayBouncePop {
+            0% {
+                opacity: 0;
+                transform: scale(0.3) translateY(60px) rotate(-6deg);
+            }
+            45% {
+                opacity: 1;
+                transform: scale(1.08) translateY(-18px) rotate(3deg);
+            }
+            65% {
+                transform: scale(0.95) translateY(6px) rotate(-2deg);
+            }
+            82% {
+                transform: scale(1.03) translateY(-6px) rotate(1deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0) rotate(0deg);
+            }
+        }
+
+        /* حركة طفو مستمرة لطيفة بعد النط */
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(1.5deg); }
+        }
+
+        .animate-birthday-card {
+            animation: 
+                birthdayBouncePop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+                gentleFloat 3s ease-in-out 0.9s infinite;
+        }
+
+        /* حركة اهتزاز عند إدخال رمز خاطئ */
+        @keyframes shakeError {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+
+        .shake {
+            animation: shakeError 0.45s ease-in-out;
+        }
+
+        /* انتقال ناعم بين الشاشات */
+        .stage-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .stage-section.active {
+            display: flex;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+           تصميم الأزرار الدافئة
+           ========================================================================== */
+        .btn-warm {
+            background: linear-gradient(135deg, var(--peach-primary) 0%, var(--peach-dark) 100%);
+            color: #FFFDF9;
+            font-weight: 700;
+            border-radius: 9999px;
+            box-shadow: 0 8px 20px -4px rgba(231, 111, 81, 0.45), inset 0 2px 2px rgba(255, 255, 255, 0.35);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border: 2px solid #FFF8EE;
+        }
+
+        .btn-warm:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 24px -4px rgba(231, 111, 81, 0.55), inset 0 2px 3px rgba(255, 255, 255, 0.45);
+        }
+
+        .btn-warm:active {
+            transform: translateY(1px) scale(0.98);
+        }
+
+        .btn-secondary-warm {
+            background-color: var(--yellow-soft);
+            color: var(--text-brown);
+            font-weight: 700;
+            border-radius: 9999px;
+            border: 2px solid var(--yellow-warm);
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary-warm:hover:not(:disabled) {
+            background-color: var(--yellow-warm);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary-warm:disabled {
+            opacity: 0.45;
+            cursor: not-allowed;
+        }
+
+        /* ==========================================================================
+           تصميم ورقة الرسالة الدافئة
+           ========================================================================== */
+        .letter-paper {
+            background-color: var(--card-bg);
+            border: 2px dashed var(--peach-primary);
+            box-shadow: 0 15px 35px -10px rgba(92, 64, 51, 0.12);
+            position: relative;
+            background-image: repeating-linear-gradient(
+                transparent,
+                transparent 35px,
+                rgba(244, 162, 97, 0.14) 36px
+            );
+        }
+
+        .font-handwriting {
+            font-family: 'Amiri', 'Tajawal', serif;
+        }
+
+        /* ==========================================================================
+           تصميم الكتاب التفاعلي وتقليب الصفحات
+           ========================================================================== */
+        .book-container {
+            perspective: 1500px;
+        }
+
+        .book-card {
+            background: linear-gradient(to left, #FFFDF9 0%, #FDF4E7 96%, #EED5B7 100%);
+            border: 2px solid var(--border-warm);
+            border-right: 10px solid var(--peach-primary); /* كعب الكتاب من اليمين بما أنه عربي */
+            box-shadow: 
+                -10px 15px 30px rgba(92, 64, 51, 0.14),
+                inset 4px 0 12px rgba(231, 111, 81, 0.06);
+            transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.35s ease;
+            transform-origin: right center;
+        }
+
+        /* تأثير تقليب الصفحة */
+        .page-flip-next {
+            animation: flipOutNext 0.45s ease forwards;
+        }
+
+        .page-flip-prev {
+            animation: flipOutPrev 0.45s ease forwards;
+        }
+
+        @keyframes flipOutNext {
+            0% { transform: rotateY(0deg) scale(1); opacity: 1; }
+            50% { transform: rotateY(-18deg) scale(0.97); opacity: 0.4; }
+            100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+        }
+
+        @keyframes flipOutPrev {
+            0% { transform: rotateY(0deg) scale(1); opacity: 1; }
+            50% { transform: rotateY(18deg) scale(0.97); opacity: 0.4; }
+            100% { transform: rotateY(0deg) scale(1); opacity: 1; }
+        }
+
+        /* استيكرات حول شاشة الرمز */
+        .sticker-float {
+            animation: gentleFloat 4s ease-in-out infinite;
+            filter: drop-shadow(0 6px 10px rgba(92, 64, 51, 0.12));
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6">
+
+    <!-- رسومات دودلز (نجوم وقلوب وفيونكات لطيفة) في خلفية الشاشة -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-70" aria-hidden="true">
+        <svg class="absolute top-6 right-6 w-12 h-12 text-[#F4A261]" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M32 8 L36 24 L52 28 L36 32 L32 48 L28 32 L12 28 L28 24 Z" />
+        </svg>
+        <svg class="absolute bottom-10 left-8 w-14 h-14 text-[#E9C46A]" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M32 50 C18 38 10 28 16 19 C21 12 29 15 32 22 C35 15 43 12 48 19 C54 28 46 38 32 50 Z" />
+        </svg>
+        <svg class="absolute top-1/4 left-6 w-10 h-10 text-[#E76F51]/60" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <circle cx="32" cy="32" r="6" />
+            <path d="M32 10 V18 M32 46 V54 M10 32 H18 M46 32 H54" />
+        </svg>
+        <svg class="absolute bottom-1/4 right-8 w-12 h-12 text-[#F4A261]/70" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <path d="M22 32 C12 22 12 42 22 32 C32 22 32 42 42 32 C52 22 52 42 42 32" />
+        </svg>
+    </div>
+
+    <!-- الحاوية الرئيسية للموقع -->
+    <main class="relative z-10 w-full max-w-xl mx-auto flex flex-col items-center justify-center">
+
+        <!-- ======================================================================
+             المرحلة الأولى: شاشة الرمز السري (2009716) + الاستيكرات الصغيرة
+             ====================================================================== -->
+        <section id="stage-lock" class="stage-section active flex-col items-center w-full">
+            
+            <div class="relative w-full max-w-md">
+                
+                <!-- استيكر 1 (أعلى اليمين): استبدلي sticker1.png باسم صورتك الصغيرة -->
+                <div class="sticker-float absolute -top-8 -right-3 sm:-right-7 z-20 w-16 h-16 sm:w-20 sm:h-20 bg-[#FFFDF9] p-1.5 rounded-2xl border-2 border-[#E9C46A] shadow-md rotate-6 flex items-center justify-center overflow-hidden">
+                    <img src="sticker1.png" alt="استيكر لطيف 1" class="w-full h-full object-contain rounded-xl"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <!-- شكل بديل يظهر تلقائياً إذا لم ترفعي صورة sticker1.png بعد -->
+                    <div class="hidden flex-col items-center justify-center text-center">
+                        <span class="text-2xl sm:text-3xl">🐱</span>
+                        <span class="text-[10px] text-[#8C6D5E] font-bold">مياو!</span>
+                    </div>
+                </div>
+
+                <!-- استيكر 2 (أعلى اليسار): استبدلي sticker2.png باسم صورتك الصغيرة -->
+                <div class="sticker-float absolute -top-6 -left-3 sm:-left-6 z-20 w-14 h-14 sm:w-18 sm:h-18 bg-[#FFFDF9] p-1.5 rounded-full border-2 border-[#F4A261] shadow-md -rotate-12 flex items-center justify-center overflow-hidden" style="animation-delay: 1s;">
+                    <img src="sticker2.png" alt="استيكر لطيف 2" class="w-full h-full object-contain rounded-full"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="hidden items-center justify-center text-2xl">🎀</div>
+                </div>
+
+                <!-- استيكر 3 (أسفل اليمين): استبدلي sticker3.png باسم صورتك الصغيرة -->
+                <div class="sticker-float absolute -bottom-7 right-4 z-20 w-14 h-14 bg-[#FFFDF9] p-1.5 rounded-2xl border-2 border-[#E76F51]/60 shadow-md -rotate-6 flex items-center justify-center overflow-hidden" style="animation-delay: 1.8s;">
+                    <img src="sticker3.png" alt="استيكر لطيف 3" class="w-full h-full object-contain rounded-xl"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                    <div class="hidden items-center justify-center text-2xl">🐾</div>
+                </div>
+
+                <!-- بطاقة إدخال الرمز السري -->
+                <div id="lock-card" class="bg-[#FFFDF9] border-2 border-[#EED6B8] rounded-3xl p-7 sm:p-10 shadow-xl text-center relative overflow-hidden">
+                    <!-- شريط لوني دافئ أعلى البطاقة -->
+                    <div class="absolute top-0 inset-x-0 h-2.5 bg-gradient-to-r from-[#E9C46A] via-[#F4A261] to-[#E76F51]"></div>
+
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[#FDF2E3] border-2 border-[#E9C46A] flex items-center justify-center text-3xl shadow-inner">
+                        🔐
+                    </div>
+
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-[#5C4033] mb-2">
+                        هدية سرّية لـ ضوضو ✨
+                    </h1>
+                    <p class="text-sm sm:text-base text-[#8C6D5E] mb-6 leading-relaxed">
+                        اكتب الرمز السري الخاص عشان تفتح المفاجأة
+                    </p>
+
+                    <!-- حقل إدخال الرمز -->
+                    <div class="space-y-4">
+                        <input 
+                            type="tel" 
+                            id="secret-code-input" 
+                            inputmode="numeric"
+                            maxlength="10"
+                            placeholder="•••••••"
+                            dir="ltr"
+                            class="w-full text-center text-2xl sm:text-3xl tracking-[0.35em] font-extrabold py-3.5 px-4 rounded-2xl bg-[#FFF8EE] border-2 border-[#EED6B8] text-[#5C4033] focus:outline-none focus:border-[#F4A261] focus:ring-4 focus:ring-[#F4A261]/20 transition-all placeholder:text-[#D5BEA4]"
+                        >
+
+                        <!-- رسالة خطأ لطيفة عند إدخال رمز غير صحيح -->
+                        <p id="error-msg" class="text-xs sm:text-sm font-bold text-[#E76F51] hidden">
+                            اممم الرمز مو صح! جرب مرة ثانية 🐾
+                        </p>
+
+                        <button 
+                            id="unlock-btn"
+                            type="button"
+                            class="btn-warm w-full py-3.5 px-6 text-lg flex items-center justify-center gap-2 cursor-pointer"
+                        >
+                            <span>افتح الهدية</span>
+                            <span>✨</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             المرحلة الثانية: مفاجأة Happy Birthday (بطاقة تنط + ورق طاير)
+             ====================================================================== -->
+        <section id="stage-birthday" class="stage-section flex-col items-center text-center w-full">
+            
+            <div class="mb-3 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FBE8B2]/80 border border-[#E9C46A] text-[#5C4033] text-sm font-bold shadow-sm">
+                <span>🎉</span>
+                <span>كل عام وأنت بخير يا ماضي!</span>
+                <span>🎉</span>
+            </div>
+
+            <!-- حاوية صورة بطاقة Happy Birthday التي تنط -->
+            <div class="animate-birthday-card w-full max-w-md my-3 p-3 sm:p-4 bg-[#FFFDF9] rounded-3xl border-2 border-[#F4A261] shadow-2xl relative">
+                <!-- زوايا دودلز لطيفة حول البطاقة -->
+                <span class="absolute -top-3 -right-3 text-2xl select-none">✨</span>
+                <span class="absolute -bottom-3 -left-3 text-2xl select-none">🌟</span>
+
+                <!-- ================================================================
+                     ملاحظة لـ موني: 
+                     احفظي صورة "هابي بيرث داي" اللي صممتيها بنفس المجلد باسم:
+                     birthday.png
+                     ================================================================ -->
+                <img 
+                    src="birthday.png" 
+                    alt="Happy Birthday ضوضو" 
+                    class="w-full h-auto max-h-80 object-contain rounded-2xl mx-auto"
+                    onerror="this.style.display='none'; document.getElementById('birthday-fallback').style.display='flex';"
+                >
+
+                <!-- تصميم بديل احترافي يظهر تلقائياً قبل رفع صورتك birthday.png -->
+                <div id="birthday-fallback" class="hidden flex-col items-center justify-center py-10 px-6 rounded-2xl bg-gradient-to-br from-[#FFF8EE] via-[#FBE8B2]/60 to-[#F4A261]/30 border-2 border-dashed border-[#F4A261]">
+                    <div class="text-6xl mb-3">🎂🐱🎈</div>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold text-[#E76F51] tracking-wide mb-2" style="font-family: 'Cairo', sans-serif;">
+                        HAPPY BIRTHDAY!
+                    </h2>
+                    <p class="text-lg font-bold text-[#5C4033]">
+                        يوم ميلاد سعيد يا أحلى ضوضو ✨
+                    </p>
+                    <span class="mt-3 text-xs text-[#8C6D5E] bg-white/80 px-3 py-1 rounded-full">
+                        (مكان صورتك: birthday.png)
+                    </span>
+                </div>
+            </div>
+
+            <!-- زر الانتقال للرسالة -->
+            <div class="mt-6">
+                <button 
+                    id="to-letter-btn"
+                    type="button"
+                    class="btn-warm py-3.5 px-8 text-lg sm:text-xl flex items-center gap-3 cursor-pointer"
+                >
+                    <span>اقرأ رسالتك</span>
+                    <span class="text-2xl">💌</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             المرحلة الثالثة: رسالة الميلاد الطويلة والتشجيعية
+             ====================================================================== -->
+        <section id="stage-letter" class="stage-section flex-col items-center w-full">
+            
+            <div class="letter-paper w-full rounded-3xl p-6 sm:p-10 text-right">
+                
+                <!-- ترويسة الرسالة -->
+                <div class="flex items-center justify-between border-b-2 border-[#EED6B8] pb-4 mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-[#E76F51] block mb-1">رسالة خاصة</span>
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-[#5C4033]">
+                            إلى صديقي المقرب ماضي 🧡
+                        </h2>
+                    </div>
+                    <div class="w-12 h-12 rounded-2xl bg-[#FBE8B2] border border-[#E9C46A] flex items-center justify-center text-2xl shrink-0">
+                        ✉️
+                    </div>
+                </div>
+
+                <!-- ================================================================
+                     ملاحظة لـ موني:
+                     عدّلي الكلام اللي تحت واكتبي رسالتك الطويلة لـ ماضي براحتك!
+                     كل فقرة بين <p> و </p> تمثل سطر أو فقرة في الرسالة.
+                     ================================================================ -->
+                <div class="font-handwriting text-lg sm:text-xl text-[#5C4033] leading-loose space-y-4">
+                    <p>
+                        كل عام وأنت بألف خير وصحة وسعادة يا ضوضو! اليوم مو يوم عادي، اليوم كبرت سنة وبتبدأ مرحلة جديدة كلها نجاحات وإنجازات تليق فيك.
+                    </p>
+                    <p>
+                        أعرف إن يوم ميلادك جا بوسط زحمة الدراسة والاختبارات، وإن عقلك الحين مشغول بالمذاكرة والتركيز على مستقبلك، وعشان كذا حبيت أسوي لك هالهدية البسيطة اللي تقدر تفتحها بأي وقت وتغيّر جوّك شوي.
+                    </p>
+                    <p>
+                        أنت من أعز الناس على قلبي، وصداقتك وجودك دايم يفرقون. واثقة إنك قدّها وقدود في اختباراتك وبتبدّع وتجيب أعلى الدرجات اللي ترفع الراس، لا تشيل هم ولا تضغط نفسك زيادة، كل تعبك الحين بتشوف ثماره قريب بإذن الله.
+                    </p>
+                    <p>
+                        انبسط بيومك حتى لو بـ بريك صغير، وابتسم دايم لأن ابتسامتك تفتح النفس. عقبال سنين كثيرة جاية وأشوفك محقق كل أحلامك وطموحاتك وأنت بأعلى المراتب ✨
+                    </p>
+                    <p class="pt-3 font-bold text-[#E76F51] text-left">
+                        — من صديقتك اللي تتمنى لك كل الخير 🌻
+                    </p>
+                </div>
+            </div>
+
+            <!-- زر الانتقال للكتاب التفاعلي -->
+            <div class="mt-7">
+                <button 
+                    id="to-book-btn"
+                    type="button"
+                    class="btn-warm py-3.5 px-8 text-lg sm:text-xl flex items-center gap-3 cursor-pointer"
+                >
+                    <span>افتح الكتاب</span>
+                    <span class="text-2xl">📖</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- ======================================================================
+             المرحلة الرابعة: الكتاب التفاعلي (٦ أوراق قصة + ورقة الخاتمة = ٧ صفحات)
+             ====================================================================== -->
+        <section id="stage-book" class="stage-section flex-col items-center w-full">
+            
+            <!-- شريط علوي يوضح عنوان الكتاب ورقم الصفحة -->
+            <div class="w-full flex items-center justify-between mb-3 px-2">
+                <span class="text-sm sm:text-base font-extrabold text-[#5C4033] flex items-center gap-1.5">
+                    <span>📖</span>
+                    <span>قصة ضوضو</span>
+                </span>
+                <span id="page-indicator" class="px-3.5 py-1 rounded-full bg-[#FBE8B2] border border-[#E9C46A] text-xs sm:text-sm font-bold text-[#5C4033]">
+                    صفحة ١ من ٧
+                </span>
+            </div>
+
+            <!-- حاوية الكتاب التفاعلي -->
+            <div class="book-container w-full">
+                <div id="book-page-card" class="book-card rounded-3xl p-5 sm:p-8 w-full min-h-[430px] sm:min-h-[470px] flex flex-col justify-between relative">
+                    
+                    <!-- محتوى الصفحة يتغير ديناميكياً عبر الجافاسكربت -->
+                    <div id="book-content" class="flex-1 flex flex-col items-center justify-center text-center">
+                        <!-- سيتم تعبئة الصورة والنص هنا تلقائياً -->
+                    </div>
+
+                    <!-- خط زخرفي أسفل الورقة -->
+                    <div class="mt-4 pt-3 border-t border-[#EED6B8]/70 flex items-center justify-between text-xs text-[#8C6D5E]">
+                        <span>✨ قصة خاصة لـ ماضي</span>
+                        <span id="page-dots" class="flex gap-1.5">
+                            <!-- نقاط الصفحات -->
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- أزرار تقليب صفحات الكتاب -->
+            <div class="w-full flex items-center justify-between gap-4 mt-6 px-1">
+                <button 
+                    id="prev-page-btn"
+                    type="button"
+                    class="btn-secondary-warm py-3 px-5 sm:px-7 text-base flex items-center gap-2 cursor-pointer"
+                >
+                    <span>→</span>
+                    <span>السابق</span>
+                </button>
+
+                <button 
+                    id="next-page-btn"
+                    type="button"
+                    class="btn-warm py-3 px-6 sm:px-8 text-base flex items-center gap-2 cursor-pointer"
+                >
+                    <span>التالي</span>
+                    <span>←</span>
+                </button>
+
+                <!-- زر إعادة من البداية يظهر في الصفحة الأخيرة (الخاتمة) -->
+                <button 
+                    id="restart-btn"
+                    type="button"
+                    class="hidden btn-warm py-3 px-6 sm:px-8 text-base items-center gap-2 cursor-pointer"
+                >
+                    <span>إعادة من البداية</span>
+                    <span>↺</span>
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================================================
+         كود البرمجة والتفاعل (JavaScript)
+         ========================================================================== -->
+    <script>
+        // 1. الرمز السري المعتمد
+        const SECRET_CODE = "2009716";
+
+        // 2. بيانات صفحات الكتاب (6 صفحات قصة + 1 صفحة خاتمة = 7 صفحات)
+        // ملاحظة لـ موني: تقدرين تعدلين النصوص هنا (title و text) وأسماء الصور (image) بكل سهولة!
+        const bookPages = [
+            {
+                type: "story",
+                pageNum: "١",
+                image: "story1.png", // ضعي رسمة الصفحة الأولى بهذا الاسم
+                fallbackEmoji: "📚☕",
+                title: "الفصل الأول: البطل والكتب",
+                text: "كان يا ما كان، فيه طالب مجتهد اسمه ضوضو، غرقان بين الكتب والمذاكرة ويحاول يخلّص كل اللي عليه بأقوى عزيمة."
+            },
+            {
+                type: "story",
+                pageNum: "٢",
+                image: "story2.png", // ضعي رسمة الصفحة الثانية بهذا الاسم
+                fallbackEmoji: "🧠⚡",
+                title: "الفصل الثاني: وضع التركيز العالي",
+                text: "من كثر ما هو مركز بدراسته، طفّى كل شي حوله وحط طاقته كلها عشان يبني مستقبله ويحقق أهدافه."
+            },
+            {
+                type: "story",
+                pageNum: "٣",
+                image: "story3.png", // ضعي رسمة الصفحة الثالثة بهذا الاسم
+                fallbackEmoji: "📅✨",
+                title: "الفصل الثالث: يوم مميز!",
+                text: "وفجأة، وسط زحمة الأيام والمذاكرة، دقّ الجرس ليوم 16/7... اليوم اللي نورّت فيه الدنيا بوجود ماضي!"
+            },
+            {
+                type: "story",
+                pageNum: "٤",
+                image: "story4.png", // ضعي رسمة الصفحة الرابعة بهذا الاسم
+                fallbackEmoji: "🐱🎁",
+                title: "الفصل الرابع: مفاجأة صغيرة",
+                text: "قالت صديقته: لازم ياخذ بريك صغير لو دقايق، ويعرف إن فيه أحد يقدّر تعبه ويتمنى له أحلى يوم ميلاد."
+            },
+            {
+                type: "story",
+                pageNum: "٥",
+                image: "story5.png", // ضعي رسمة الصفحة الخامسة بهذا الاسم
+                fallbackEmoji: "🌟🏆",
+                title: "الفصل الخامس: النجاح القريب",
+                text: "وبعد ما يخلّص هالاختبارات على خير، بتكون النتيجة فرحة كبيرة تليق بتعبه واجتهاده طول هالفترة."
+            },
+            {
+                type: "story",
+                pageNum: "٦",
+                image: "story6.png", // ضعي رسمة الصفحة السادسة بهذا الاسم
+                fallbackEmoji: "🚀🌈",
+                title: "الفصل السادس: القادم أجمل",
+                text: "السنين الجاية بتكون مليانة إنجازات وذكريات حلوة، وكل حلم في باله بيصير حقيقة خطوة بخطوة."
+            },
+            {
+                type: "finale",
+                pageNum: "٧",
+                image: "finale.png", // اختياري: لو حابة تحطين صورة في الخاتمة
+                fallbackEmoji: "🎂🧡✨",
+                title: "خاتمة الهدية",
+                text: "وهنا تنتهي صفحات هالكتاب الصغير، بس دعواتي لك بالتوفيق والسعادة ما تنتهي. كل عام وأنت بخير يا ضوضو، وبالتوفيق في اختباراتك يا بطل! 🌻"
+            }
+        ];
+
+        let currentPageIndex = 0;
+
+        // عناصر الشاشات
+        const stageLock = document.getElementById("stage-lock");
+        const stageBirthday = document.getElementById("stage-birthday");
+        const stageLetter = document.getElementById("stage-letter");
+        const stageBook = document.getElementById("stage-book");
+
+        const codeInput = document.getElementById("secret-code-input");
+        const unlockBtn = document.getElementById("unlock-btn");
+        const lockCard = document.getElementById("lock-card");
+        const errorMsg = document.getElementById("error-msg");
+
+        // دالة الانتقال السلس بين المراحل
+        function switchStage(fromStage, toStage, callback) {
+            fromStage.style.opacity = "0";
+            fromStage.style.transform = "translateY(-15px)";
+            
+            setTimeout(() => {
+                fromStage.classList.remove("active");
+                toStage.classList.add("active");
+                // إعادة تفعيل الحركة
+                void toStage.offsetWidth;
+                toStage.style.opacity = "1";
+                toStage.style.transform = "translateY(0)";
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                if (callback) callback();
+            }, 350);
+        }
+
+        // دالة إطلاق الورق الملون الطاير (Confetti) بألوان الثيم الدافئة
+        function launchWarmConfetti() {
+            const colors = ['#F4A261', '#E76F51', '#E9C46A', '#FFF8EE', '#F7B267'];
+            
+            confetti({
+                particleCount: 90,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: colors
+            });
+
+            setTimeout(() => {
+                confetti({
+                    particleCount: 55,
+                    angle: 60,
+                    spread: 65,
+                    origin: { x: 0, y: 0.65 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 55,
+                    angle: 120,
+                    spread: 65,
+                    origin: { x: 1, y: 0.65 },
+                    colors: colors
+                });
+            }, 300);
+        }
+
+        // التحقق من الرمز السري
+        function checkSecretCode() {
+            // تحويل الأرقام العربية إلى إنجليزية تلقائياً في حال كتبها بلوحة مفاتيح عربية
+            const rawValue = codeInput.value.trim();
+            const normalizedValue = rawValue.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+
+            if (normalizedValue === SECRET_CODE) {
+                errorMsg.classList.add("hidden");
+                switchStage(stageLock, stageBirthday, () => {
+                    launchWarmConfetti();
+                });
+            } else {
+                errorMsg.classList.remove("hidden");
+                lockCard.classList.remove("shake");
+                void lockCard.offsetWidth;
+                lockCard.classList.add("shake");
+                codeInput.focus();
+            }
+        }
+
+        unlockBtn.addEventListener("click", checkSecretCode);
+        codeInput.addEventListener("keypress", (e) => {
+            if (e.key === "Enter") checkSecretCode();
+        });
+
+        // الانتقال من بطاقة Happy Birthday إلى الرسالة
+        document.getElementById("to-letter-btn").addEventListener("click", () => {
+            switchStage(stageBirthday, stageLetter);
+        });
+
+        // الانتقال من الرسالة إلى الكتاب التفاعلي
+        document.getElementById("to-book-btn").addEventListener("click", () => {
+            currentPageIndex = 0;
+            renderBookPage();
+            switchStage(stageLetter, stageBook);
+        });
+
+        // ======================================================================
+        // منطق عرض وتقليب صفحات الكتاب التفاعلي
+        // ======================================================================
+        const bookContent = document.getElementById("book-content");
+        const bookPageCard = document.getElementById("book-page-card");
+        const pageIndicator = document.getElementById("page-indicator");
+        const pageDots = document.getElementById("page-dots");
+        const prevBtn = document.getElementById("prev-page-btn");
+        const nextBtn = document.getElementById("next-page-btn");
+        const restartBtn = document.getElementById("restart-btn");
+
+        function renderBookPage(direction = null) {
+            const page = bookPages[currentPageIndex];
+            
+            // تطبيق أنيميشن تقليب الصفحة
+            if (direction === "next") {
+                bookPageCard.classList.remove("page-flip-next", "page-flip-prev");
+                void bookPageCard.offsetWidth;
+                bookPageCard.classList.add("page-flip-next");
+            } else if (direction === "prev") {
+                bookPageCard.classList.remove("page-flip-next", "page-flip-prev");
+                void bookPageCard.offsetWidth;
+                bookPageCard.classList.add("page-flip-prev");
+            }
+
+            // تحديث عداد الصفحات
+            pageIndicator.textContent = `صفحة ${page.pageNum} من ٧`;
+
+            // بناء محتوى الصفحة (إما صفحة قصة عادية أو صفحة الخاتمة)
+            if (page.type === "story") {
+                bookContent.innerHTML = `
+                    <div class="w-full max-w-sm mx-auto mb-4 rounded-2xl overflow-hidden bg-[#FFF8EE] border-2 border-[#EED6B8] p-2 shadow-inner">
+                        <img 
+                            src="${page.image}" 
+                            alt="${page.title}" 
+                            class="w-full h-52 sm:h-60 object-contain rounded-xl mx-auto"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        >
+                        <!-- شكل بديل يظهر قبل رفع رسمتك -->
+                        <div class="hidden flex-col items-center justify-center h-52 sm:h-60 rounded-xl bg-gradient-to-b from-[#FDF2E3] to-[#FBE8B2]/40 border border-dashed border-[#F4A261] p-4">
+                            <span class="text-5xl mb-2">${page.fallbackEmoji}</span>
+                            <span class="text-xs font-bold text-[#8C6D5E] bg-white/80 px-3 py-1 rounded-full">
+                                مكان رسمتك (${page.image})
+                            </span>
+                        </div>
+                    </div>
+                    <h3 class="text-lg sm:text-xl font-extrabold text-[#E76F51] mb-2">
+                        ${page.title}
+                    </h3>
+                    <p class="font-handwriting text-lg sm:text-xl text-[#5C4033] leading-relaxed px-2">
+                        ${page.text}
+                    </p>
+                `;
+            } else {
+                // صفحة الخاتمة (الصفحة السابعة)
+                bookContent.innerHTML = `
+                    <div class="py-4 px-2 flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-full bg-[#FBE8B2] border-2 border-[#F4A261] flex items-center justify-center text-4xl mb-4 shadow-md animate-bounce">
+                            ${page.fallbackEmoji}
+                        </div>
+                        <span class="text-xs font-bold text-[#E76F51] bg-[#FDF2E3] px-3 py-1 rounded-full mb-2 border border-[#EED6B8]">
+                            النهاية ✨
+                        </span>
+                        <h3 class="text-2xl sm:text-3xl font-extrabold text-[#5C4033] mb-4">
+                            ${page.title}
+                        </h3>
+                        <p class="font-handwriting text-xl sm:text-2xl text-[#5C4033] leading-loose max-w-md">
+                            ${page.text}
+                        </p>
+                    </div>
+                `;
+                launchWarmConfetti();
+            }
+
+            // تحديث نقاط الصفحات السفلية
+            pageDots.innerHTML = bookPages.map((_, idx) => `
+                <span class="w-2 h-2 rounded-full transition-all ${idx === currentPageIndex ? 'bg-[#E76F51] w-4' : 'bg-[#EED6B8]'}"></span>
+            `).join("");
+
+            // التحكم في ظهور أزرار التنقل
+            prevBtn.disabled = currentPageIndex === 0;
+
+            if (currentPageIndex === bookPages.length - 1) {
+                nextBtn.classList.add("hidden");
+                restartBtn.classList.remove("hidden");
+                restartBtn.classList.add("flex");
+            } else {
+                nextBtn.classList.remove("hidden");
+                restartBtn.classList.add("hidden");
+                restartBtn.classList.remove("flex");
+            }
+        }
+
+        nextBtn.addEventListener("click", () => {
+            if (currentPageIndex < bookPages.length - 1) {
+                currentPageIndex++;
+                renderBookPage("next");
+            }
+        });
+
+        prevBtn.addEventListener("click", () => {
+            if (currentPageIndex > 0) {
+                currentPageIndex--;
+                renderBookPage("prev");
+            }
+        });
+
+        restartBtn.addEventListener("click", () => {
+            codeInput.value = "";
+            switchStage(stageBook, stageLock);
+        });
+
+        // دعم السحب باللمس (Swipe) على الجوال لتقليب صفحات الكتاب
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        bookPageCard.addEventListener("touchstart", (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        bookPageCard.addEventListener("touchend", (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            const diff = touchEndX - touchStartX;
+            // في الواجهة العربية (RTL): السحب لليمين يذهب للصفحة التالية، ولليسار للصفحة السابقة
+            if (diff > 50 && currentPageIndex < bookPages.length - 1) {
+                currentPageIndex++;
+                renderBookPage("next");
+            } else if (diff < -50 && currentPageIndex > 0) {
+                currentPageIndex--;
+                renderBookPage("prev");
+            }
+        }, { passive: true });
+    </script>
+</body>
+</html>
